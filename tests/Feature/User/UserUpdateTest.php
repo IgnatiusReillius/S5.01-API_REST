@@ -40,4 +40,21 @@ class UserUpdateTest extends TestCase
         $this->assertTrue(Hash::check('miNuevaContraseña!2', $user->password));
         $this->assertFalse(Hash::check('miContraseña!1', $user->password));
     }
+    
+    public function test_cannot_update_user_with_invalid_data() : void {
+        
+        $user = User::factory()->create();
+        
+        $data = [
+            'name' => '',
+            'email' => 'invalid-email',
+            'password' => 'short',
+            'password_confirmation' => 'different'
+        ];
+        
+        $response = $this->putJson("/api/users/{$user->id}", $data);
+        
+        $response->assertStatus(422)
+                 ->assertJsonValidationErrors(['name', 'email', 'password']);
+    }
 }
