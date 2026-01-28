@@ -25,4 +25,17 @@ class UserCreateTest extends TestCase
             'email' => 'nacho@prueba.com',
         ]);
     }
+
+    public function test_cannot_create_user_with_invalid_data() : void {
+        
+        $response = $this->postJson('/api/users', [
+            'name' => '',
+            'email' => 'invalid-email',
+            'password' => 'one',
+            'password_confirmation' => 'two',
+        ]);
+
+        $response->assertStatus(422)
+                 ->assertJsonValidationErrors(['name', 'email', 'password']);
+    }
 }
