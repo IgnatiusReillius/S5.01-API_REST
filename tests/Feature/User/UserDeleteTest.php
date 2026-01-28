@@ -11,7 +11,7 @@ class UserDeleteTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_delete_user() : void {
+    public function test_can_delete_user_by_id() : void {
         
         $user = User::factory()->create();
         
@@ -20,5 +20,16 @@ class UserDeleteTest extends TestCase
         $response->assertStatus(200);
         
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+    
+    public function test_can_delete_all_user() : void {
+        
+        $users = User::factory()->count(10)->create();
+        
+        $response = $this->deleteJson("/api/users");
+        
+        $response->assertStatus(200);
+        
+        $this->assertDatabaseMissing('users', []);
     }
 }
