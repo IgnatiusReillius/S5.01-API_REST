@@ -14,8 +14,8 @@ class UserCreateTest extends TestCase
         $response = $this->postJson('/api/users', [
             'name' => 'Nacho',
             'email' => 'nacho@prueba.com',
-            'password' => 'miContraseña',
-            'password_confirmation' => 'miContraseña',
+            'password' => 'miContraseña!1',
+            'password_confirmation' => 'miContraseña!1',
         ]);
 
         $response->assertStatus(201);
