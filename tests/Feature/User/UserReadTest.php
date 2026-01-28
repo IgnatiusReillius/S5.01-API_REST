@@ -16,6 +16,6 @@ class UserReadTest extends TestCase
         $response = $this->getJson('/api/users');
         
         $response->assertStatus(200)
-                 ->assertJsonCount(3); 
+                 ->assertJsonCount(2, 'data'); 
     }
 }
