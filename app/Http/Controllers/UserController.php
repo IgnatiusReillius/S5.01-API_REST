@@ -31,6 +31,12 @@ class UserController extends Controller
         return response()->json(['data' => $user], 201);
     }
 
+    public function destroyAllUsers() : JsonResponse {
+        User::query()->delete();
+        
+        return response()->json([], 200);
+    }
+
     public function destroyById(string $id) : JsonResponse {
         $user = User::findOrFail($id);
         

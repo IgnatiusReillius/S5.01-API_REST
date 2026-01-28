@@ -24,7 +24,7 @@ class UserDeleteTest extends TestCase
     
     public function test_can_delete_all_user() : void {
         
-        $users = User::factory()->count(10)->create();
+        User::factory()->count(10)->create();
         
         $response = $this->deleteJson("/api/users");
         
