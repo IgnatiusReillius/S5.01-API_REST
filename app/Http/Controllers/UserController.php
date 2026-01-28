@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function index() : JsonResponse {
+        $users = User::all();
+        
+        return response()->json(['data' => $users], 200);
+    }
+
+    public function find(string $id) : JsonResponse {
+        $user = User::findOrFail($id);
+        
+        return response()->json(['data' => $user], 200);
+    }
+
     public function store(UserRequest $request) : JsonResponse {
         $user = User::create([
             'name' => $request->name,
