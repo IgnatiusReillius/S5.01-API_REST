@@ -91,4 +91,31 @@ class ReviewReadTest extends TestCase
         $response->assertStatus(401);
     }
 
+    public function test_user_can_view_specific_review() : void {
+
+        $user = User::factory()->create();
+        $book = Book::factory()->create();
+
+        Review::create([
+            'id_user' => $user->id,
+            'id_book' => $book->id,
+            'add_date' => now(),
+            'rating' => 5,
+            'comment' => 'Increíble!',
+        ]);
+
+        Passport::actingAs($user);
+
+        $response = $this->getJson("/api/users/{$user->id}/books/{$book->id}/reviews");
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id_book' => $book->id,
+                    'id_user' => $user->id,
+                    'rating' => 5,
+                    'comment' => 'Increíble!',
+                ]
+        ]);
+    }
 }
