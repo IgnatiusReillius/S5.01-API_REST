@@ -34,7 +34,7 @@ class RegisterTest extends TestCase
     }
 
     public function test_register_fails_with_duplicate_email() : void {
-        
+
         $this->postJson('/api/users', [
             'name' => 'Nacho',
             'email' => 'nacho@test.com',
@@ -51,5 +51,14 @@ class RegisterTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
+    }
+
+    
+    public function test_register_fails_with_missing_fields() : void {
+
+        $response = $this->postJson('/api/register', []);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['name','email','password']);
     }
 }
