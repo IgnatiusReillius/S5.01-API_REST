@@ -181,4 +181,21 @@ class ReviewController extends Controller
             'message' => 'Reseña actualizada exitosamente'
         ]);
     }
+
+    public function destroy(string $id_user, string $id_book) : JsonResponse {
+
+        User::findOrFail($id_user);
+        Book::findOrFail($id_book);
+
+        $review = Review::where('id_user', $id_user)
+            ->where('id_book', $id_book)
+            ->firstOrFail();
+
+        $this->authorize('delete', $review);
+
+        $review->delete();
+
+        return response()->json(null, 204);
+    }
+
 }
