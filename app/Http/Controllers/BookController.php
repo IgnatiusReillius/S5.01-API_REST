@@ -60,4 +60,13 @@ class BookController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function destroyAll() : JsonResponse {
+
+        $this->authorize('deleteAll', Book::class);
+
+        Book::query()->delete();
+
+        return response()->json(null, 204);
+    }
 }

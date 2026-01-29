@@ -25,6 +25,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/books', [BookController::class, 'index']);
     Route::get('/books/{id_book}', [BookController::class, 'find']);
     Route::put('/books/{id_book}', [BookController::class, 'update']);
+    Route::delete('/books', [BookController::class, 'destroyAll']);
     Route::delete('/books/{id_book}', [BookController::class, 'destroy']);
 });
 
