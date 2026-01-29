@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
+use App\Http\Requests\BookUpdateRequest;
 use App\Models\Book;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
@@ -34,6 +35,17 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         
         $this->authorize('view', $book);
+
+        return response()->json(['data' => $book], 200);
+    }
+
+    public function update(BookUpdateRequest $request, string $id): JsonResponse {
+
+        $book = Book::findOrFail($id);
+        
+        $this->authorize('update', $book);
+
+        $book->update($request->validated());
 
         return response()->json(['data' => $book], 200);
     }

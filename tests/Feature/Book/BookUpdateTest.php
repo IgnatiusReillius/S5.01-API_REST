@@ -26,11 +26,6 @@ class BookUpdateTest extends TestCase
         $response = $this->putJson("/api/books/{$book->id}", [
             'title' => 'El fin de la eternidad',
             'author' => 'Isaac Asimov',
-            'isbn' => $book->isbn,
-            'publisher' => $book->publisher,
-            'publish_date' => $book->publish_date->format('Y-m-d'),
-            'pages' => $book->pages,
-            'summary' => $book->summary,
         ]);
 
         $response->assertStatus(200)
