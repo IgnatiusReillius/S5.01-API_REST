@@ -42,6 +42,8 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
+        $this->authorize('update', $user);
+
         $data = $request->only(['name', 'email', 'password']);
 
         if (isset($data['password'])) {
