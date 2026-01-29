@@ -198,4 +198,14 @@ class ReviewController extends Controller
         return response()->json(null, 204);
     }
 
+    public function destroyUserReviews(string $id_user) : JsonResponse {
+
+        User::findOrFail($id_user);
+
+        $this->authorize('deleteUserReviews', [Review::class, (int)$id_user]);
+
+        Review::where('id_user', $id_user)->delete();
+
+        return response()->json(null, 204);
+    }
 }

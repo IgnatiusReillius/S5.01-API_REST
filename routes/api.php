@@ -35,6 +35,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/users/{id_user}/reviews', [ReviewController::class, 'getUserReviews']);
     Route::get('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'show']);
     Route::put('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'update']);
+    Route::delete('/users/{id_user}/reviews', [ReviewController::class, 'destroyUserReviews']);
     Route::delete('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'destroy']);
 });
 
