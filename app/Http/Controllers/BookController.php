@@ -30,7 +30,7 @@ class BookController extends Controller
         return response()->json(['data' => $book], 201);
     }
 
-    public function find(string $id): JsonResponse {
+    public function find(string $id) : JsonResponse {
 
         $book = Book::findOrFail($id);
         
@@ -39,7 +39,7 @@ class BookController extends Controller
         return response()->json(['data' => $book], 200);
     }
 
-    public function update(BookUpdateRequest $request, string $id): JsonResponse {
+    public function update(BookUpdateRequest $request, string $id) : JsonResponse {
 
         $book = Book::findOrFail($id);
         
@@ -48,5 +48,16 @@ class BookController extends Controller
         $book->update($request->validated());
 
         return response()->json(['data' => $book], 200);
+    }
+
+    public function destroy(string $id) : JsonResponse {
+
+        $book = Book::findOrFail($id);
+        
+        $this->authorize('delete', $book);
+
+        $book->delete();
+
+        return response()->json(null, 204);
     }
 }
