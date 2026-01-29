@@ -1,7 +1,17 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/login', [AuthenticationController::class, 'login']);
+Route::post('/register', [AuthenticationController::class, 'register']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [AuthenticationController::class, 'logout']);
+    Route::post('/refresh', [AuthenticationController::class, 'refresh']);
+    Route::get('/me', [AuthenticationController::class, 'me']);
+});
 
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
