@@ -11,6 +11,15 @@ class BookController extends Controller
 {
     use AuthorizesRequests;
 
+    public function index() : JsonResponse {
+        
+        $this->authorize('viewAny', Book::class);
+        
+        $books = Book::all();
+
+        return response()->json(['data' => $books], 200);
+    }
+
     public function store(BookRequest $request) : JsonResponse {
 
         $this->authorize('create', Book::class);

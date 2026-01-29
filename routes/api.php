@@ -22,6 +22,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/users/{id_user}', [UserController::class, 'destroyById']);
     
     Route::post('/books', [BookController::class, 'store']);
+    Route::get('/books', [BookController::class, 'index']);
 });
 
 
