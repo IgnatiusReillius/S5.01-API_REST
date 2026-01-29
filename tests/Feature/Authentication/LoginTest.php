@@ -121,4 +121,14 @@ class LoginTest extends TestCase
             ->assertJsonValidationErrors(['email', 'password']);
     }
 
+    public function test_user_can_logout() : void {
+        $user = User::factory()->create();
+        $token = $user->createToken('test')->accessToken;
+
+        $response = $this->withHeader('Authorization', "Bearer {$token}")
+            ->postJson('/api/logout');
+        
+        $response->assertStatus(200)
+                ->assertJson(['message' => 'Logged out']);
+    }
 }
