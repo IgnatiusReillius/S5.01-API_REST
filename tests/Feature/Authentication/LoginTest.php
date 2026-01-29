@@ -121,14 +121,20 @@ class LoginTest extends TestCase
             ->assertJsonValidationErrors(['email', 'password']);
     }
 
-    public function test_user_can_logout() : void {
+    public function test_user_can_logout_and_token_is_revoked_after_logout() : void {
         $user = User::factory()->create();
-        $token = $user->createToken('test')->accessToken;
+        $tokenResponse = $user->createToken('test');
+        $token = $tokenResponse->accessToken;
+        $tokenId = $tokenResponse->token->id;
 
-        $response = $this->withHeader('Authorization', "Bearer {$token}")
-            ->postJson('/api/logout');
-        
-        $response->assertStatus(200)
-                ->assertJson(['message' => 'Logged out']);
+        $this->withHeader('Authorization', "Bearer {$token}")
+            ->postJson('/api/logout')
+            ->assertStatus(200)
+            ->assertJson(['message' => 'Logged out']);
+
+        $this->assertDatabaseHas('oauth_access_tokens', [
+            'id' => $tokenId,
+            'revoked' => true,
+        ]);
     }
 }
