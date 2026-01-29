@@ -29,6 +29,18 @@ class AuthenticationController extends Controller
 
         return response()->json(['message' => 'Logged out']);
     }
+
+    public function refresh(Request $request) : JsonResponse {
+        $user = $request->user();
+
+        $request->user()->token()->revoke();
+
+        $newToken = $user->createToken('access_token')->accessToken;
+
+        return response()->json([
+            'access_token' => $newToken,
+        ]);
+    }
     
     public function me(Request $request) : JsonResponse {
 
