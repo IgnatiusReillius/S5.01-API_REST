@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index() : JsonResponse {
         $users = User::all();
         
@@ -17,8 +20,11 @@ class UserController extends Controller
     }
 
     public function find(string $id) : JsonResponse {
+
         $user = User::findOrFail($id);
         
+        $this->authorize('view', $user);
+
         return response()->json(['data' => $user], 200);
     }
 
