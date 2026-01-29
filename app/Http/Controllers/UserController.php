@@ -72,6 +72,8 @@ class UserController extends Controller
     public function destroyById(string $id) : JsonResponse {
         $user = User::findOrFail($id);
         
+        $this->authorize('delete', $user);
+        
         $user->delete();
         
         return response()->json([], 200);
