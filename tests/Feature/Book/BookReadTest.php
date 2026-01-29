@@ -90,4 +90,36 @@ class BookReadTest extends TestCase
                 ]
             ]);
     }
+    
+    public function test_unauthenticated_user_cannot_view_specific_book() : void {
+
+        $book = Book::factory()->create();
+
+        $response = $this->getJson("/api/books/{$book->id}");
+
+        $response->assertStatus(401);
+    }
+
+    public function test_returns_404_when_book_not_found() : void {
+
+        $user = User::factory()->create();
+        
+        Passport::actingAs($user);
+
+        $response = $this->getJson('/api/books/99999');
+
+        $response->assertStatus(404);
+    }
+    
+    public function test_list_books_returns_empty_array_when_no_books() : void {
+
+        $user = User::factory()->create();
+        
+        Passport::actingAs($user);
+
+        $response = $this->getJson('/api/books');
+
+        $response->assertStatus(200)
+            ->assertJsonCount(0, 'data');
+    }
 }
