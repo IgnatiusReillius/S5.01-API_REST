@@ -96,4 +96,12 @@ class RefreshTokenTest extends TestCase
 
         $response->assertStatus(401);
     }
+
+    public function test_refresh_fails_with_invalid_token() : void {
+        
+        $response = $this->withHeader('Authorization', 'Bearer invalid-token')
+            ->postJson('/api/refresh');
+
+        $response->assertStatus(401);
+    }
 }
