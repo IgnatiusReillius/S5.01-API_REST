@@ -62,4 +62,9 @@ class BookPolicy
     {
         return false;
     }
+
+    public function deleteAll(User $user): bool
+    {
+        return $user->is_admin ?? false;
+    }
 }
