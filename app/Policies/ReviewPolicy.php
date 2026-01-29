@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Review;
 use App\Models\User;
 
 class ReviewPolicy
@@ -10,9 +11,15 @@ class ReviewPolicy
     {
         return $authUser->id == $userId;
     }
-    
+
     public function viewUser(User $authUser, int $userId): bool
     {
         return $authUser->is_admin || $authUser->id == $userId;
     }
+
+    public function view(User $authUser, Review $review): bool
+    {
+        return $authUser->is_admin || $authUser->id == $review->id_user;
+    }
+
 }

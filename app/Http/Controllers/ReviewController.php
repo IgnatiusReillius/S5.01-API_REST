@@ -48,7 +48,7 @@ class ReviewController extends Controller
             'message' => 'Reseña creada exitosamente'
         ], 201);
     }
-    
+
     public function getUserReviews(string $id_user) : JsonResponse {
 
         User::findOrFail($id_user);
@@ -74,5 +74,33 @@ class ReviewController extends Controller
             });
 
         return response()->json(['data' => $reviews]);
+    }
+    
+    public function show(string $id_user, string $id_book) : JsonResponse {
+
+        User::findOrFail($id_user);
+        Book::findOrFail($id_book);
+
+        $review = Review::where('id_user', $id_user)
+            ->where('id_book', $id_book)
+            ->with(['user', 'book'])
+            ->firstOrFail();
+
+        $this->authorize('view', $review);
+
+        return response()->json([
+            'data' => [
+                'id' => $review->id,
+                'id_user' => $review->id_user,
+                'id_book' => $review->id_book,
+                'book_title' => $review->book->title,
+                'add_date' => $review->add_date->format('Y-m-d'),
+                'read_date' => $review->read_date?->format('Y-m-d'),
+                'comment' => $review->comment,
+                'rating' => $review->rating,
+                'created_at' => $review->created_at,
+                'updated_at' => $review->updated_at,
+            ]
+        ]);
     }
 }

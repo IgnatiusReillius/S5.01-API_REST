@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'store']);
     Route::get('/users/{id_user}/reviews', [ReviewController::class, 'getUserReviews']);
+    Route::get('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'show']);
 });
 
 
