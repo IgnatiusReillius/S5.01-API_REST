@@ -12,7 +12,7 @@ class BookController extends Controller
     use AuthorizesRequests;
 
     public function index() : JsonResponse {
-        
+
         $this->authorize('viewAny', Book::class);
         
         $books = Book::all();
@@ -27,5 +27,14 @@ class BookController extends Controller
         $book = Book::create($request->validated());
 
         return response()->json(['data' => $book], 201);
+    }
+
+    public function find(string $id): JsonResponse {
+
+        $book = Book::findOrFail($id);
+        
+        $this->authorize('view', $book);
+
+        return response()->json(['data' => $book], 200);
     }
 }

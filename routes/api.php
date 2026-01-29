@@ -23,6 +23,7 @@ Route::middleware('auth:api')->group(function () {
     
     Route::post('/books', [BookController::class, 'store']);
     Route::get('/books', [BookController::class, 'index']);
+    Route::get('/books/{id_book}', [BookController::class, 'find']);
 });
 
 
