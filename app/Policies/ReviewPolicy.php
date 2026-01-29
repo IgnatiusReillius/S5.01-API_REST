@@ -7,6 +7,11 @@ use App\Models\User;
 
 class ReviewPolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return $user->is_admin ?? false;
+    }
+    
     public function create(User $authUser, int $userId): bool
     {
         return $authUser->id == $userId;

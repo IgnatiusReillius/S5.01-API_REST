@@ -48,6 +48,31 @@ class ReviewController extends Controller
             'message' => 'Reseña creada exitosamente'
         ], 201);
     }
+    
+    public function getAllReviews() : JsonResponse {
+
+        $this->authorize('viewAny', Review::class);
+
+        $reviews = Review::with(['user', 'book'])
+            ->get()
+            ->map(function ($review) {
+                return [
+                    'id' => $review->id,
+                    'id_user' => $review->id_user,
+                    'user_name' => $review->user->name,
+                    'id_book' => $review->id_book,
+                    'book_title' => $review->book->title,
+                    'book_author' => $review->book->author,
+                    'rating' => $review->rating,
+                    'comment' => $review->comment,
+                    'add_date' => $review->add_date->format('Y-m-d'),
+                    'read_date' => $review->read_date?->format('Y-m-d'),
+                    'created_at' => $review->created_at,
+                ];
+            });
+
+        return response()->json(['data' => $reviews]);
+    }
 
     public function getUserReviews(string $id_user) : JsonResponse {
 
