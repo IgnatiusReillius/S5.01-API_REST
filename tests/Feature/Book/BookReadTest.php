@@ -71,4 +71,23 @@ class BookReadTest extends TestCase
                 'isbn' => '9788466661393',
             ]);
     }
+
+    public function test_admin_can_view_specific_book() : void {
+
+        $admin = User::factory()->admin()->create();
+        
+        $book = Book::factory()->create();
+
+        Passport::actingAs($admin);
+
+        $response = $this->getJson("/api/books/{$book->id}");
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $book->id,
+                    'title' => $book->title,
+                ]
+            ]);
+    }
 }
