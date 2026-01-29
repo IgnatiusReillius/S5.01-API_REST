@@ -34,4 +34,15 @@ class UserAuthorizationTest extends TestCase
 
         $response->assertStatus(403);
     }
+
+    public function test_user_cannot_delete_another_user() : void {
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        Passport::actingAs($user1);
+
+        $response = $this->deleteJson("/api/users/{$user2->id}");
+
+        $response->assertStatus(403);
+    }
 }
