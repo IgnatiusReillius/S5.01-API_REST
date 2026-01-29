@@ -118,4 +118,16 @@ class ReviewReadTest extends TestCase
                 ]
         ]);
     }
+    
+    public function test_returns_404_when_review_not_found() : void {
+
+        $user = User::factory()->create();
+        $book = Book::factory()->create();
+
+        Passport::actingAs($user);
+
+        $response = $this->getJson("/api/users/{$user->id}/books/{$book->id}/reviews");
+
+        $response->assertStatus(404);
+    }
 }
