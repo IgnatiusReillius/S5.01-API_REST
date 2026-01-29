@@ -59,4 +59,19 @@ class BookDeleteTest extends TestCase
         ]);
     }
 
+    public function test_admin_can_delete_all_books() : void {
+
+        $admin = User::factory()->admin()->create();
+        
+        Book::factory()->count(5)->create();
+
+        Passport::actingAs($admin);
+
+        $response = $this->deleteJson('/api/books');
+
+        $response->assertStatus(204);
+
+        $this->assertEquals(0, Book::count());
+    }
+
 }
