@@ -24,4 +24,17 @@ class ProtectedRoutesTest extends TestCase
                 'email' => $user->email,
             ]);
     }
+
+    public function test_user_cannot_access_protected_route_without_token() : void {
+
+        $this->getJson('/api/me')
+            ->assertStatus(401);
+    }
+
+    public function test_user_cannot_access_protected_route_with_invalid_token() : void {
+
+        $this->withHeader('Authorization', "Bearer 123fake")
+            ->getJson('/api/me')
+            ->assertStatus(401);
+    }
 }
