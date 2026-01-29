@@ -1,0 +1,38 @@
+<?php
+
+namespace Tests\Feature\Authentication;
+
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class RefreshTokenTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_user_can_refresh_token() : void {
+        
+        User::factory()->create([
+            'email' => 'nacho@prueba.com',
+            'password' => bcrypt('miContraseña!1')
+        ]);
+
+        $loginResponse = $this->postJson('/api/login', [
+            'email' => 'nacho@prueba.com',
+            'password' => 'miContraseña!1'
+        ]);
+
+        $originalToken = $loginResponse->json('access_token');
+
+        $response = $this->withHeader('Authorization', "Bearer {$originalToken}")
+            ->postJson('/api/refresh');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['access_token']);
+
+        $newToken = $response->json('access_token');
+
+        $this->assertNotEquals($originalToken, $newToken);
+        $this->assertNotEmpty($newToken);
+    }
+}
