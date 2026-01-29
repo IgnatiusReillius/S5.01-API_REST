@@ -184,4 +184,19 @@ class ReviewDeleteTest extends TestCase
 
         $this->assertEquals(0, Review::count());
     }
+
+    public function test_non_admin_cannot_delete_all_reviews_globally() : void {
+
+        $user = User::factory()->create();
+
+        Review::factory()->count(3)->create();
+
+        Passport::actingAs($user);
+
+        $response = $this->deleteJson('/api/users/books/reviews');
+
+        $response->assertStatus(403);
+
+        $this->assertEquals(3, Review::count());
+    }
 }
