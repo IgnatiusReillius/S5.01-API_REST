@@ -25,4 +25,18 @@ class BookReadTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonCount(3, 'data');
     }
+
+    public function test_admin_can_list_books() : void {
+
+        $admin = User::factory()->admin()->create();
+        
+        Book::factory()->count(2)->create();
+
+        Passport::actingAs($admin);
+
+        $response = $this->getJson('/api/books');
+
+        $response->assertStatus(200)
+            ->assertJsonCount(2, 'data');
+    }
 }
