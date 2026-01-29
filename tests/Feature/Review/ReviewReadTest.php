@@ -159,4 +159,16 @@ class ReviewReadTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonCount(2, 'data');
     }
+    
+    public function test_non_admin_cannot_view_all_reviews() : void {
+
+        $user = User::factory()->create();
+
+        Passport::actingAs($user);
+
+        $response = $this->getJson('/api/users/books/reviews');
+
+        $response->assertStatus(403);
+    }
+
 }
