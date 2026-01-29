@@ -36,4 +36,24 @@ class ReviewPolicy
     {
         return $authUser->is_admin || $authUser->id == $review->id_user;
     }
+
+    public function delete(User $authUser, Review $review): bool
+    {
+        return $authUser->is_admin || $authUser->id == $review->id_user;
+    }
+    
+    public function deleteUserReviews(User $authUser, int $userId): bool
+    {
+        return $authUser->is_admin || $authUser->id == $userId;
+    }
+
+    public function deleteAll(User $user): bool
+    {
+        return $user->is_admin ?? false;
+    }
+    
+    public function deleteBookReviews(User $user): bool
+    {
+        return $user->is_admin ?? false;
+    }
 }

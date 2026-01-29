@@ -181,4 +181,51 @@ class ReviewController extends Controller
             'message' => 'Reseña actualizada exitosamente'
         ]);
     }
+
+    public function destroy(string $id_user, string $id_book) : JsonResponse {
+
+        User::findOrFail($id_user);
+        Book::findOrFail($id_book);
+
+        $review = Review::where('id_user', $id_user)
+            ->where('id_book', $id_book)
+            ->firstOrFail();
+
+        $this->authorize('delete', $review);
+
+        $review->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function destroyUserReviews(string $id_user) : JsonResponse {
+
+        User::findOrFail($id_user);
+
+        $this->authorize('deleteUserReviews', [Review::class, (int)$id_user]);
+
+        Review::where('id_user', $id_user)->delete();
+
+        return response()->json(null, 204);
+    }
+    
+    public function destroyAll() : JsonResponse {
+
+        $this->authorize('deleteAll', Review::class);
+
+        Review::query()->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function destroyBookReviews(string $id_book) : JsonResponse {
+
+        Book::findOrFail($id_book);
+
+        $this->authorize('deleteBookReviews', Review::class);
+
+        Review::where('id_book', $id_book)->delete();
+
+        return response()->json(null, 204);
+    }
 }
