@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\BookRequest;
+use App\Models\Book;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
+
+class BookController extends Controller
+{
+    use AuthorizesRequests;
+
+    public function store(BookRequest $request) : JsonResponse {
+
+        $this->authorize('create', Book::class);
+
+        $book = Book::create($request->validated());
+
+        return response()->json(['data' => $book], 201);
+    }
+}

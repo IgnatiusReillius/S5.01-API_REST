@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,8 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/users/{id_user}', [UserController::class, 'update']);
     Route::delete('/users', [UserController::class, 'destroyAllUsers']);
     Route::delete('/users/{id_user}', [UserController::class, 'destroyById']);
+    
+    Route::post('/books', [BookController::class, 'store']);
 });
 
 
