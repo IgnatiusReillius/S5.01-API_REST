@@ -35,4 +35,28 @@ class RefreshTokenTest extends TestCase
         $this->assertNotEquals($originalToken, $newToken);
         $this->assertNotEmpty($newToken);
     }
+
+    public function test_refresh_token_revokes_old_token() : void {
+        
+        $user = User::factory()->create([
+            'email' => 'nacho@prueba.com',
+            'password' => bcrypt('miContraseña!1')
+        ]);
+
+        $response = $this->postJson('/api/login', [
+            'email' => 'nacho@prueba.com',
+            'password' => 'miContraseña!1'
+        ]);
+
+        $originalToken = $response->json('access_token');
+
+        $this->withHeader('Authorization', "Bearer {$originalToken}")
+            ->postJson('/api/refresh')
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('oauth_access_tokens', [
+            'user_id' => $user->id,
+            'revoked' => true,
+        ]);
+    }
 }
