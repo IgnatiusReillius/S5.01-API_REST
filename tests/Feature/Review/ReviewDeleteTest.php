@@ -134,4 +134,24 @@ class ReviewDeleteTest extends TestCase
 
         $this->assertEquals(0, Review::where('id_user', $user->id)->count());
     }
+    
+    public function test_user_cannot_delete_another_user_all_reviews() : void {
+
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $book = Book::factory()->create();
+
+        Review::create([
+            'id_user' => $user2->id,
+            'id_book' => $book->id,
+            'add_date' => now(),
+            'rating' => 5,
+        ]);
+
+        Passport::actingAs($user1);
+
+        $response = $this->deleteJson("/api/users/{$user2->id}/reviews");
+
+        $response->assertStatus(403);
+    }
 }
