@@ -10,4 +10,9 @@ class ReviewPolicy
     {
         return $authUser->id == $userId;
     }
+    
+    public function viewUser(User $authUser, int $userId): bool
+    {
+        return $authUser->is_admin || $authUser->id == $userId;
+    }
 }

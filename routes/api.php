@@ -30,6 +30,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/books/{id_book}', [BookController::class, 'destroy']);
 
     Route::post('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'store']);
+    Route::get('/users/{id_user}/reviews', [ReviewController::class, 'getUserReviews']);
 });
 
 
