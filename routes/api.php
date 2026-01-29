@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthenticationController::class, 'login']);
 
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [AuthenticationController::class, 'logout']);
+});
+
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id_user}', [UserController::class, 'find']);
