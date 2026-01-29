@@ -22,4 +22,16 @@ class UserAuthorizationTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_user_cannot_update_another_user() : void {
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        Passport::actingAs($user1);
+
+        $response = $this->putJson("/api/users/{$user2->id}", [
+            'name' => 'Hacker',
+        ]);
+
+        $response->assertStatus(403);
+    }
 }
