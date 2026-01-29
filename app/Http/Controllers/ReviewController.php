@@ -209,4 +209,13 @@ class ReviewController extends Controller
         return response()->json(null, 204);
     }
     
+    public function destroyAll() : JsonResponse {
+
+        $this->authorize('deleteAll', Review::class);
+
+        Review::query()->delete();
+
+        return response()->json(null, 204);
+    }
+
 }
