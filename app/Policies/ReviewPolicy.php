@@ -11,7 +11,7 @@ class ReviewPolicy
     {
         return $user->is_admin ?? false;
     }
-    
+
     public function create(User $authUser, int $userId): bool
     {
         return $authUser->id == $userId;
@@ -27,4 +27,8 @@ class ReviewPolicy
         return $authUser->is_admin || $authUser->id == $review->id_user;
     }
 
+    public function viewBook(User $user): bool
+    {
+        return $user->is_admin ?? false;
+    }
 }
