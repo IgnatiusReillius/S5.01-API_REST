@@ -59,4 +59,34 @@ class RefreshTokenTest extends TestCase
             'revoked' => true,
         ]);
     }
+
+    public function test_new_token_can_access_protected_routes() : void {
+
+        $user = User::factory()->create([
+            'email' => 'nacho@prueba.com',
+            'password' => bcrypt('miContraseña!1')
+        ]);
+
+        $loginResponse = $this->postJson('/api/login', [
+            'email' => 'nacho@prueba.com',
+            'password' => 'miContraseña!1'
+        ]);
+
+        $originalToken = $loginResponse->json('access_token');
+
+        $refreshResponse = $this->withHeader('Authorization', "Bearer {$originalToken}")
+            ->postJson('/api/refresh');
+
+        $newToken = $refreshResponse->json('access_token');
+
+        $this->withHeader('Authorization', "Bearer {$newToken}")
+            ->getJson('/api/me')
+            ->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $user->id,
+                    'email' => 'nacho@prueba.com'
+                ]
+        ]);
+    }
 }
