@@ -31,4 +31,9 @@ class ReviewPolicy
     {
         return $user->is_admin ?? false;
     }
+    
+    public function update(User $authUser, Review $review): bool
+    {
+        return $authUser->is_admin || $authUser->id == $review->id_user;
+    }
 }

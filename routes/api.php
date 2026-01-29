@@ -34,6 +34,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/users/books/{id_book}/reviews', [ReviewController::class, 'getBookReviews']);
     Route::get('/users/{id_user}/reviews', [ReviewController::class, 'getUserReviews']);
     Route::get('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'show']);
+    Route::put('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'update']);
 });
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReviewRequest;
+use App\Http\Requests\ReviewUpdateRequest;
 use App\Models\Book;
 use App\Models\Review;
 use App\Models\User;
@@ -151,6 +152,33 @@ class ReviewController extends Controller
                 'created_at' => $review->created_at,
                 'updated_at' => $review->updated_at,
             ]
+        ]);
+    }
+
+    public function update(ReviewUpdateRequest $request, string $id_user, string $id_book) : JsonResponse {
+
+        User::findOrFail($id_user);
+        Book::findOrFail($id_book);
+
+        $review = Review::where('id_user', $id_user)
+            ->where('id_book', $id_book)
+            ->firstOrFail();
+
+        $this->authorize('update', $review);
+
+        $review->update($request->validated());
+
+        return response()->json([
+            'data' => [
+                'id_user' => $review->id_user,
+                'id_book' => $review->id_book,
+                'add_date' => $review->add_date->format('Y-m-d'),
+                'read_date' => $review->read_date?->format('Y-m-d'),
+                'comment' => $review->comment,
+                'rating' => $review->rating,
+                'updated_at' => $review->updated_at,
+            ],
+            'message' => 'Reseña actualizada exitosamente'
         ]);
     }
 }
