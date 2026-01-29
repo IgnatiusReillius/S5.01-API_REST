@@ -26,15 +26,11 @@ class UserDeleteTest extends TestCase
     
     public function test_can_delete_all_user() : void {
         
-        $users = User::factory()->count(10)->create();
-        foreach($users as $user){
-            Passport::actingAs($user);
-        }
+        $user = User::factory()->create();
+        Passport::actingAs($user);
         
         $response = $this->deleteJson("/api/users");
         
-        $response->assertStatus(200);
-        
-        $this->assertDatabaseMissing('users', []);
+        $response->assertStatus(403);
     }
 }

@@ -14,6 +14,9 @@ class UserController extends Controller
     use AuthorizesRequests;
 
     public function index() : JsonResponse {
+        
+        $this->authorize('viewAny', User::class);
+
         $users = User::all();
         
         return response()->json(['data' => $users], 200);
@@ -22,13 +25,16 @@ class UserController extends Controller
     public function find(string $id) : JsonResponse {
 
         $user = User::findOrFail($id);
-        
-        $this->authorize('view', $user);
 
+        $this->authorize('view', $user);
+        
         return response()->json(['data' => $user], 200);
     }
 
     public function store(UserRequest $request) : JsonResponse {
+
+        $this->authorize('create', User::class);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -64,16 +70,15 @@ class UserController extends Controller
     }
 
     public function destroyAllUsers() : JsonResponse {
-        User::query()->delete();
-        
-        return response()->json([], 200);
+        abort(403);
     }
 
     public function destroyById(string $id) : JsonResponse {
+
         $user = User::findOrFail($id);
         
         $this->authorize('delete', $user);
-        
+
         $user->delete();
         
         return response()->json([], 200);
