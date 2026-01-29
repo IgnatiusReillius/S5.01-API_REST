@@ -5,6 +5,7 @@ namespace Tests\Feature\User;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class UserUpdateTest extends TestCase
@@ -16,6 +17,7 @@ class UserUpdateTest extends TestCase
         $user = User::factory()->create([
             'password' => bcrypt('miContraseña!1')
         ]);
+        Passport::actingAs($user);
         
         $updatedData = [
             'email' => 'jose@email.com',
@@ -44,6 +46,7 @@ class UserUpdateTest extends TestCase
     public function test_cannot_update_user_with_invalid_data() : void {
         
         $user = User::factory()->create();
+        Passport::actingAs($user);
         
         $data = [
             'name' => '',

@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\User;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class UserCreateTest extends TestCase
@@ -11,6 +13,9 @@ class UserCreateTest extends TestCase
 
     public function test_can_create_user() : void {
         
+        $user = User::factory()->create();
+        Passport::actingAs($user);
+
         $response = $this->postJson('/api/users', [
             'name' => 'Nacho',
             'email' => 'nacho@prueba.com',
@@ -27,6 +32,9 @@ class UserCreateTest extends TestCase
     }
 
     public function test_cannot_create_user_with_invalid_data() : void {
+        
+        $user = User::factory()->create();
+        Passport::actingAs($user);
         
         $response = $this->postJson('/api/users', [
             'name' => '',

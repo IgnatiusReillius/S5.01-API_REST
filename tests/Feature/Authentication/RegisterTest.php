@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Authentication;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase 
@@ -35,11 +37,11 @@ class RegisterTest extends TestCase
 
     public function test_register_fails_with_duplicate_email() : void {
 
-        $this->postJson('/api/users', [
-            'name' => 'Nacho',
+        $password = 'miContraseña!1';
+
+        $user = User::factory()->create([
             'email' => 'nacho@test.com',
-            'password' => 'miContraseña!1',
-            'password_confirmation' => 'miContraseña!1',
+            'password' => Hash::make($password),
         ]);
 
         $response = $this->postJson('/api/register', [

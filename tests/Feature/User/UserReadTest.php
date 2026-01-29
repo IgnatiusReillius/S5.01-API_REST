@@ -4,6 +4,7 @@ namespace Tests\Feature\User;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class UserReadTest extends TestCase
@@ -12,7 +13,10 @@ class UserReadTest extends TestCase
 
     public function test_can_list_users() : void {
 
-        User::factory()->count(2)->create();
+        $users = User::factory()->count(2)->create();
+        foreach($users as $user){
+            Passport::actingAs($user);
+        }
         
         $response = $this->getJson('/api/users');
         
@@ -23,6 +27,7 @@ class UserReadTest extends TestCase
     public function test_can_show_user_by_id() : void {
         
         $user = User::factory()->create();
+        Passport::actingAs($user);
         
         $response = $this->getJson("/api/users/{$user->id}");
         
