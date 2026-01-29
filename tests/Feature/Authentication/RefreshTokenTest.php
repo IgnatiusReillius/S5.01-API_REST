@@ -89,4 +89,11 @@ class RefreshTokenTest extends TestCase
                 ]
         ]);
     }
+
+    public function test_non_authenticated_user_cannot_refresh_token() : void {
+
+        $response = $this->postJson('/api/refresh');
+
+        $response->assertStatus(401);
+    }
 }
