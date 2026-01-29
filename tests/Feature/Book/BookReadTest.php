@@ -48,4 +48,27 @@ class BookReadTest extends TestCase
 
         $response->assertStatus(401);
     }
+
+    public function test_authenticated_user_can_view_specific_book() : void {
+        
+        $user = User::factory()->create();
+        
+        $book = Book::factory()->create([
+            'title' => 'El Problema de los Tres Cuerpos',
+            'author' => 'Cixin Liu',
+            'isbn' => '9788466661393',
+        ]);
+
+        Passport::actingAs($user);
+
+        $response = $this->getJson("/api/books/{$book->id}");
+
+        $response->assertStatus(200)
+            ->assertJsonFragment([
+                'id' => $book->id,
+                'title' => 'El Problema de los Tres Cuerpos',
+                'author' => 'Cixin Liu',
+                'isbn' => '9788466661393',
+            ]);
+    }
 }
