@@ -39,4 +39,13 @@ class BookReadTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonCount(2, 'data');
     }
+
+    public function test_unauthenticated_user_cannot_list_books() : void {
+
+        Book::factory()->count(3)->create();
+
+        $response = $this->getJson('/api/books');
+
+        $response->assertStatus(401);
+    }
 }
