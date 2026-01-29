@@ -10,7 +10,7 @@ class RegisterTest extends TestCase
     use RefreshDatabase;
 
     public function test_user_can_register_and_recieve_token() : void {
-        
+
         $data = [
             'name' => 'Nacho',
             'email' => 'nacho@test.com',
@@ -33,4 +33,23 @@ class RegisterTest extends TestCase
         ]);
     }
 
+    public function test_register_fails_with_duplicate_email() : void {
+        
+        $this->postJson('/api/users', [
+            'name' => 'Nacho',
+            'email' => 'nacho@test.com',
+            'password' => 'miContraseña!1',
+            'password_confirmation' => 'miContraseña!1',
+        ]);
+
+        $response = $this->postJson('/api/register', [
+            'name' => 'Otro',
+            'email' => 'nacho@test.com',
+            'password' => 'otraContraseña!2',
+            'password_confirmation' => 'otraContraseña!2',
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['email']);
+    }
 }
