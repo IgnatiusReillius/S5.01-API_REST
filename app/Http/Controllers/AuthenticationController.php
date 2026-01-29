@@ -29,4 +29,11 @@ class AuthenticationController extends Controller
 
         return response()->json(['message' => 'Logged out']);
     }
+    
+    public function me(Request $request) : JsonResponse {
+
+        return response()->json([
+            'data' => $request->user()
+        ]);
+    }
 }
