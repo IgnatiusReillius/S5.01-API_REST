@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,8 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/books/{id_book}', [BookController::class, 'update']);
     Route::delete('/books', [BookController::class, 'destroyAll']);
     Route::delete('/books/{id_book}', [BookController::class, 'destroy']);
+
+    Route::post('/users/{id_user}/books/{id_book}/reviews', [ReviewController::class, 'store']);
 });
 
 
