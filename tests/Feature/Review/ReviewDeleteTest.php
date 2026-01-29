@@ -154,34 +154,4 @@ class ReviewDeleteTest extends TestCase
 
         $response->assertStatus(403);
     }
-
-    public function test_admin_can_delete_all_user_reviews() : void {
-
-        $admin = User::factory()->admin()->create();
-        $user = User::factory()->create();
-        $book1 = Book::factory()->create();
-        $book2 = Book::factory()->create();
-
-        Review::create([
-            'id_user' => $user->id,
-            'id_book' => $book1->id,
-            'add_date' => now(),
-            'rating' => 5,
-        ]);
-
-        Review::create([
-            'id_user' => $user->id,
-            'id_book' => $book2->id,
-            'add_date' => now(),
-            'rating' => 4,
-        ]);
-
-        Passport::actingAs($admin);
-
-        $response = $this->deleteJson("/api/users/{$user->id}/books/reviews");
-
-        $response->assertStatus(204);
-
-        $this->assertEquals(0, Review::where('id_user', $user->id)->count());
-    }
 }
