@@ -118,7 +118,7 @@ class ReviewReadTest extends TestCase
                 ]
         ]);
     }
-    
+
     public function test_returns_404_when_review_not_found() : void {
 
         $user = User::factory()->create();
@@ -129,5 +129,34 @@ class ReviewReadTest extends TestCase
         $response = $this->getJson("/api/users/{$user->id}/books/{$book->id}/reviews");
 
         $response->assertStatus(404);
+    }
+    
+    public function test_admin_can_view_all_reviews() : void {
+
+        $admin = User::factory()->admin()->create();
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $book = Book::factory()->create();
+
+        Review::create([
+            'id_user' => $user1->id,
+            'id_book' => $book->id,
+            'add_date' => now(),
+            'rating' => 5,
+        ]);
+
+        Review::create([
+            'id_user' => $user2->id,
+            'id_book' => $book->id,
+            'add_date' => now(),
+            'rating' => 4,
+        ]);
+
+        Passport::actingAs($admin);
+
+        $response = $this->getJson('/api/users/books/reviews');
+
+        $response->assertStatus(200)
+            ->assertJsonCount(2, 'data');
     }
 }
