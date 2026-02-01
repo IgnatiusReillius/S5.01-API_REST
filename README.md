@@ -1,59 +1,175 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## miBiblio – Book Management Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful API Laravel-based application for managing a personal library, where users can add the books they own and add a personal review.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- User registration and authentication
+- Role-based access control, with admin and user roles
+- Add personal reviews to your books
+- Full CRUD for books, users and reviews 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prerequisites
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Before cloning the project, ensure the following tools are installed:
 
-## Learning Laravel
+- **[Git](https://git-scm.com/install/windows)**
+- **[PHP via XAMPP](https://codersfree.com/posts/como-instalar-php-en-windows-usando-xampp)**
+- **[Composer](https://getcomposer.org/download/)**
+- **[Postman](https://www.postman.com/downloads/)**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clone the repository
+```
+git clone https://github.com/IgnatiusReillius/S5.01-API_REST.git
+cd S5.01-API_REST
+```
 
-## Laravel Sponsors
+### 2. Install PHP dependencies
+```
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Create your environment file
+```
+cp .env.example .env
+```
 
-### Premium Partners
+### 4. Generate the application key
+```
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 5. Environment Configuration
 
-## Contributing
+Make sure your `/.env` file contains the following:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sprint5
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Code of Conduct
+### 6. Run Migrations and Seeders
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+This will rebuild your database and load initial data for make easier to test the API later:
+```
+php artisan migrate --seed
+```
 
-## Security Vulnerabilities
+### 7. Install Passport
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+php artisan passport:install
+```
+
+
+### 8. Start the Development Servers
+
+```
+php artisan serve
+```
+
+This command will return a message similar to:
+
+```
+Server running on [http://127.0.0.1:8000].
+```
+
+With this URL, you will be able to access the application.
+
+## Testing the Application
+
+Now you can test the API by starting Apache and MySQL in Xampp and making requests in Postman.
+You can upload the file with the requests to test them quickly. You will see that they are separated by administrator and user. 
+
+![alt text](/screenshots/1.jpg)
+
+
+To run them correctly, you will need to set the environment:
+
+![alt text](/screenshots/2.jpg)
+
+And the URL that appeared when you ran the server in the terminal earlier:
+
+![alt text](/screenshots/3.jpg)
+
+Now you can make requests and test all endpoints.
+
+Some of them already come with the necessary data, such as when registering a user:
+
+![alt text](/screenshots/4.jpg)
+
+And to test the protected requests, you will first have to execute the administrator and user login requests. This way, you automatically save the access tokens for each role in variables. 
+
+All requests are separated into administrator, who can perform most actions, such as viewing the entire list of users:
+
+![alt text](/screenshots/5.jpg)
+
+Or user ones:
+
+![alt text](/screenshots/6.jpg)
+
+## Roles y permissions
+
+| Rol | Permissions |
+|-----|----------|
+| **user** | Can register and delete your account <br> Can create, view, update, and delete your book reviews <br> Can search for books|
+| **admin** | Can register, view, modify and delete users <br> Can view, update and delete reviews <br> Can create, view, update and delete books |
+
+## Endpoints
+
+### Autenticación
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/register` | Create user |
+| POST | `/api/login` | Obtain token |
+| POST | `/api/refresh` | Refresh token |
+| GET | `/api/me` | Get user info |
+| POST | `/api/logout` | Logout |
+
+### Users
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| POST | `/api/users` | Create user | Admin for anyone <br> User for itself  |
+| GET | `/api/users` | List all users | Admin |
+| GET | `/api/users/{id}` | List specific user | Admin |
+| PUT | `/api/users/{id}` | Update specific user | Admin for anyone <br> User for itself |
+| DELETE | `/api/users/{id}` | Delete specific user | Admin for anyone <br> User for itself |
+| DELETE | `/api/users` | Delete all users | Admin |
+
+### Books
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| POST | `/api/books` | Create book | Admin |
+| GET | `/api/books` | List books | Both |
+| GET | `/api/books/{id}` | List specific book | Both |
+| PUT | `/api/books/{id}` | Update specific book | Admin |
+| DELETE | `/api/books/{id}` | Delete specific book | Admin |
+| DELETE | `/api/books` | Delete all books | Admin |
+
+### Reviews
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| POST | `/api/users/{id_user}/books/{id_book}/reviews` | Create review for a book | User |
+| GET | `/api/users/books/reviews` | List all reviews | Admin |
+| GET | `/api/users/books/{id_book}/reviews` | List all reviews by book | Admin |
+| GET | `/api/users/{id_user}/reviews` | List all reviews by user | Admin for anyone <br> User for itself  |
+| GET | `/api/users/{id_user}/books/{id_book}/reviews` | List specific review by book | Admin for anyone <br> User for itself  |
+| PUT | `/api/users/{id_user}/books/{id_book}/reviews` | Update specific user | Admin for anyone <br> User for itself |
+| DELETE | `/api/users/books/reviews` | Delete all reviews | Admin |
+| DELETE | `/api/users/books/{id_book}/reviews` | Delete all reviews by book | Admin |
+| DELETE | `/users/{id_user}/reviews` | Delete all reviews by user | Admin |
+| DELETE | `/users/{id_user}/books/{id_book}/reviews` | Delete specific review by user | Admin for anyone <br> User for itself  |
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is for educational purposes and part of the IT Academy exercises.
