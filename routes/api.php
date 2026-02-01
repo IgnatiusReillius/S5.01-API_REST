@@ -15,8 +15,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/refresh', [AuthenticationController::class, 'refresh']);
     Route::get('/me', [AuthenticationController::class, 'me']);
 
-    Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
+    Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id_user}', [UserController::class, 'find']);
     Route::put('/users/{id_user}', [UserController::class, 'update']);
     Route::delete('/users', [UserController::class, 'destroyAllUsers']);

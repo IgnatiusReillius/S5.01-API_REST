@@ -9,7 +9,7 @@ class ReviewPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->is_admin ?? false;
+        return $user->is_admin;
     }
 
     public function create(User $authUser, int $userId): bool
@@ -29,7 +29,7 @@ class ReviewPolicy
 
     public function viewBook(User $user): bool
     {
-        return $user->is_admin ?? false;
+        return $user->is_admin;
     }
     
     public function update(User $authUser, Review $review): bool
@@ -49,11 +49,11 @@ class ReviewPolicy
 
     public function deleteAll(User $user): bool
     {
-        return $user->is_admin ?? false;
+        return $user->is_admin;
     }
     
     public function deleteBookReviews(User $user): bool
     {
-        return $user->is_admin ?? false;
+        return $user->is_admin;
     }
 }

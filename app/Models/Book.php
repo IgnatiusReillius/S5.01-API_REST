@@ -23,4 +23,15 @@ class Book extends Model
         'publish_date' => 'date',
     ];
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'reviews', 'id_book', 'id_user')
+                    ->withPivot('add_date', 'read_date', 'comment', 'rating')
+                    ->withTimestamps();
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'id_book');
+    }
 }

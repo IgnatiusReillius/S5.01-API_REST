@@ -23,3 +23,10 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 .rnd
+/database/migrations/2026_01_28_210540_create_oauth_auth_codes_table.php
+/database/migrations/2026_01_28_210541_create_oauth_access_tokens_table.php
+/database/migrations/2026_01_28_210542_create_oauth_refresh_tokens_table.php
+/database/migrations/2026_01_28_210543_create_oauth_clients_table.php
+/database/migrations/2026_01_28_210544_create_oauth_device_codes_table.php
+.postman/config.json
+postman/globals/workspace.postman_globals.json

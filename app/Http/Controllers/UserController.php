@@ -55,8 +55,6 @@ class UserController extends Controller
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
-
-        $user->update($data);
         
         $data = $request->validated();
 
@@ -70,7 +68,14 @@ class UserController extends Controller
     }
 
     public function destroyAllUsers() : JsonResponse {
-        abort(403);
+        
+        $this->authorize('deleteAll', User::class);
+        
+        User::where('id', '!=', auth()->id())->delete();
+        
+        return response()->json([
+            'message' => 'All non admin users have been deleted.'
+        ], 200);
     }
 
     public function destroyById(string $id) : JsonResponse {
@@ -81,6 +86,8 @@ class UserController extends Controller
 
         $user->delete();
         
-        return response()->json([], 200);
+        return response()->json([
+            'message' => 'That users have been deleted.'
+        ], 200);
     }
 }

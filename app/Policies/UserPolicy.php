@@ -12,7 +12,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -20,7 +20,7 @@ class UserPolicy
      */
     public function view(User $authUser, User $user): bool
     {
-        return $authUser->id === $user->id;
+        return $authUser->is_admin || $authUser->id === $user->id;
     }
 
     /**
@@ -36,7 +36,7 @@ class UserPolicy
      */
     public function update(User $authUser, User $user): bool
     {
-        return $authUser->id === $user->id;
+        return $authUser->is_admin || $authUser->id === $user->id;
     }
 
     /**
@@ -44,7 +44,12 @@ class UserPolicy
      */
     public function delete(User $authUser, User $user): bool
     {
-        return $authUser->id === $user->id;
+        return $authUser->is_admin || $authUser->id === $user->id;
+    }
+    
+    public function deleteAll(User $user): bool
+    {
+        return $user->is_admin;
     }
 
     /**

@@ -28,7 +28,7 @@ class BookPolicy
      */
     public function create(User $user): bool
     {
-        return $user->is_admin ?? false;
+        return $user->is_admin;
     }
 
     /**
@@ -36,7 +36,7 @@ class BookPolicy
      */
     public function update(User $user, Book $book): bool
     {
-        return $user->is_admin ?? false;
+        return $user->is_admin;
     }
 
     /**
@@ -44,7 +44,7 @@ class BookPolicy
      */
     public function delete(User $user, Book $book): bool
     {
-        return $user->is_admin ?? false;
+        return $user->is_admin;
     }
 
     /**
@@ -65,6 +65,6 @@ class BookPolicy
 
     public function deleteAll(User $user): bool
     {
-        return $user->is_admin ?? false;
+        return $user->is_admin;
     }
 }
