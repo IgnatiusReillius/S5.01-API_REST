@@ -635,7 +635,68 @@
       "name": "Users",
       "item": [
         {
-          "name": "users",
+          "name": "users (admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseURL}}/api/users?name=jojo&email=jojo@jaja.com&password=Contra!1&password_confirmation=Contra!1",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "jojo"
+                },
+                {
+                  "key": "email",
+                  "value": "jojo@jaja.com"
+                },
+                {
+                  "key": "password",
+                  "value": "Contra!1"
+                },
+                {
+                  "key": "password_confirmation",
+                  "value": "Contra!1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "users (user)",
           "request": {
             "auth": {
               "type": "bearer",
@@ -1107,14 +1168,14 @@
               "raw": ""
             },
             "url": {
-              "raw": "{{baseURL}}/api/users/4",
+              "raw": "{{baseURL}}/api/users/6",
               "host": [
                 "{{baseURL}}"
               ],
               "path": [
                 "api",
                 "users",
-                "4"
+                "6"
               ]
             }
           },
@@ -1151,14 +1212,14 @@
               "raw": ""
             },
             "url": {
-              "raw": "{{baseURL}}/api/users/4",
+              "raw": "{{baseURL}}/api/users/6",
               "host": [
                 "{{baseURL}}"
               ],
               "path": [
                 "api",
                 "users",
-                "4"
+                "6"
               ]
             }
           },
